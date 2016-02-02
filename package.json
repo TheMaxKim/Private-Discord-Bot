@@ -28,14 +28,14 @@
   },
   "homepage": "https://github.com/hydrabolt/discord.js#readme",
   "dependencies": {
+    "google": "1.1.x",
+    "google-images": "0.1.x",
+    "node-opus": "^0.1.11",
+    "request": ">=2.58.0",
     "superagent": "^1.5.0",
     "unpipe": "^1.0.0",
     "ws": "^0.8.1",
-    "node-opus": "^0.1.11",
-    "request": ">=2.58.0",
-    "youtube-node": "1.2.x",
-    "google": "1.1.x",
-    "google-images": "0.1.x"
+    "youtube-node": "^1.2.0"
   },
   "devDependencies": {
     "colors": "^1.1.2",

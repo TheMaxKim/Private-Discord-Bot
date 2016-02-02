@@ -1,7 +1,13 @@
 var Discord = require("discord.js");
 var request = require("request");
 
+var youtube_node = require("youtube-node");
+
+
 var AuthDetails = require("./auth.json");
+
+var youtube = new youtube_node();
+youtube.setKey(AuthDetails.youtube_api_key);
 
 var bot = new Discord.Client();
 
@@ -72,6 +78,24 @@ bot.on("message", function(msg) {
             bot.sendMessage(msg.channel, "Result for \"" + args + "\"\n" + randResult.link);
         });
     }
+
+    if (command === "!yt") {
+        console.log("lolol");
+        youtube.search(args, 1, function(error, result) {
+            if (error) {
+                console.log(error);
+                bot.sendMessage(msg.channel, "Error from YouTube!");
+            } else {
+                console.log("yo!");
+                if (!result || !result.items || result.items.length < 1) {
+                    bot.sendMessage(msg.channel, "¯No results from YouTube!");
+                } else {
+                    bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId );
+                }
+            }
+        });
+    }
+
 
     if (msg.content === "ping") {
         bot.sendMessage(msg.channel, "pong!");
