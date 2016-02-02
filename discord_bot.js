@@ -8,7 +8,7 @@ var AuthDetails = require("./auth.json");
 
 var youtube = new youtube_node();
 youtube.setKey(AuthDetails.youtube_api_key);
-
+youtube.addParam('type', 'video');
 var bot = new Discord.Client();
 
 bot.on("ready", function() {
@@ -80,20 +80,14 @@ bot.on("message", function(msg) {
     }
 
     if (command === "!yt") {
-        // Get 5 search results incase of channel results being returned.
-        youtube.search(args, 5, function(error, result) {
+        youtube.search(args, 1, function(error, result) {
             if (error) {
                 bot.sendMessage(msg.channel, "Error from YouTube!");
             } else {
                 if (!result || !result.items || result.items.length < 1) {
                     bot.sendMessage(msg.channel, "No results from YouTube!");
                 } else {
-                    var i = 0;
-                    // Get a result that is actually a video
-                    while (result.items[i].id.kind != 'youtube#video' && i < result.items.length) {
-                        i++;
-                    }
-                    bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[i].id.videoId );
+                    bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId );
                 }
             }
         });
