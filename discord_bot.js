@@ -29,6 +29,11 @@ bot.on("presence", function(user,status,gameId) {
 */
 });
 
+bot.on("ready", function() {
+    var channels = bot.channels;
+    bot.sendMessage(channels[0], "Ohayo~!");
+});
+
 bot.on("message", function(msg) {
 
     var command = msg.content.split(/\s(.+)?/)[0];
