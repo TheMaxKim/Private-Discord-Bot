@@ -80,17 +80,20 @@ bot.on("message", function(msg) {
     }
 
     if (command === "!yt") {
-        console.log("lolol");
-        youtube.search(args, 1, function(error, result) {
+        // Get 5 search results incase of channel results being returned.
+        youtube.search(args, 5, function(error, result) {
             if (error) {
-                console.log(error);
                 bot.sendMessage(msg.channel, "Error from YouTube!");
             } else {
-                console.log("yo!");
                 if (!result || !result.items || result.items.length < 1) {
-                    bot.sendMessage(msg.channel, "¯No results from YouTube!");
+                    bot.sendMessage(msg.channel, "No results from YouTube!");
                 } else {
-                    bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[0].id.videoId );
+                    var i = 0;
+                    // Get a result that is actually a video
+                    while (result.items[i].id.kind != 'youtube#video' && i < result.items.length) {
+                        i++;
+                    }
+                    bot.sendMessage(msg.channel, "http://www.youtube.com/watch?v=" + result.items[i].id.videoId );
                 }
             }
         });
