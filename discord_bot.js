@@ -3,13 +3,16 @@ var request = require("request");
 
 var youtube_node = require("youtube-node");
 
-
 var AuthDetails = require("./auth.json");
 
 var youtube = new youtube_node();
 youtube.setKey(AuthDetails.youtube_api_key);
 youtube.addParam('type', 'video');
 var bot = new Discord.Client();
+
+//soundcloud
+var SC = require('node-soundcloud');
+SC.init({id: AuthDetails.soundcloud_client_id});
 
 bot.on("ready", function() {
     console.log("Bot ready!");
@@ -37,7 +40,7 @@ bot.on("presence", function(user,status,gameId) {
 
 bot.on("ready", function() {
     var channels = bot.channels;
-    bot.sendMessage(channels[0], "Ohayo~!");
+    //bot.sendMessage(channels[0], "Ohayo~!");
 });
 
 bot.on("message", function(msg) {
@@ -93,6 +96,33 @@ bot.on("message", function(msg) {
         });
     }
 
+    if (command === "!sc") {
+        if(args === "kevin") {
+            SC.get('/users/12049781/favorites', function(err, tracks) {
+                if ( err ) {
+                    console.log(err);
+                } else {
+                    bot.sendMessage(msg.channel, tracks[0].permalink_url);
+                }
+            });
+        }
+        else{
+            SC.get('/tracks', {q: args}, function(err, tracks) {
+                if(err){
+                    console.log(err);
+                    if(tracks == undefined){
+                        bot.sendMessage(msg.channel, "No tracks found");
+                    }
+                } else{
+                    /*console.log("Length: " + tracks.length);
+                    tracks.forEach(function(value, index, array){
+                        console.log(value.title);
+                    });*/
+                    bot.sendMessage(msg.channel, tracks[Math.floor(Math.random() * tracks.length)].permalink_url);
+                }
+            });
+        }
+    }
 
     if (msg.content === "ping") {
         bot.sendMessage(msg.channel, "pong!");
@@ -101,7 +131,7 @@ bot.on("message", function(msg) {
     }
 
     if (msg.content.toLowerCase().indexOf("who do you love?") === 0) {
-        bot.sendMessage(msg.channel, "I love Tippy!! (´•ω•｀)");
+        bot.sendMessage(msg.channel, "I love Dank Memes!! (´•ω•｀)");
 
         console.log(msg);
     }
@@ -111,6 +141,8 @@ bot.on("message", function(msg) {
 
         console.log(msg);
     }
+    
+    
 
 });
 
