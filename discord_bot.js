@@ -1,16 +1,20 @@
-var Discord = require("discord.js");
-var request = require("request");
 
-var youtube_node = require("youtube-node");
-
+// Obtain Discord login and API keys
 var AuthDetails = require("./auth.json");
 
+// Initialize bot
+var Discord = require("discord.js");
+var discord_bot = new Discord.Client();
+
+// Initialize YouTube
+var youtube_node = require("youtube-node");
 var youtube = new youtube_node();
 youtube.setKey(AuthDetails.youtube_api_key);
 youtube.addParam('type', 'video');
-var bot = new Discord.Client();
 
-//soundcloud
+var request = require("request");
+
+// Initialize soundcloud
 var SC = require('node-soundcloud');
 SC.init({id: AuthDetails.soundcloud_client_id});
 
@@ -36,11 +40,6 @@ bot.on("presence", function(user,status,gameId) {
         bot.sendMessage("Ohayo " + user.username + "~! (´•ω•｀)")
     }
 */
-});
-
-bot.on("ready", function() {
-    var channels = bot.channels;
-    //bot.sendMessage(channels[0], "Ohayo~!");
 });
 
 bot.on("message", function(msg) {
@@ -114,10 +113,10 @@ bot.on("message", function(msg) {
                         bot.sendMessage(msg.channel, "No tracks found");
                     }
                 } else{
-                    /*console.log("Length: " + tracks.length);
+                    console.log("Length: " + tracks.length);
                     tracks.forEach(function(value, index, array){
                         console.log(value.title);
-                    });*/
+                    });
                     bot.sendMessage(msg.channel, tracks[Math.floor(Math.random() * tracks.length)].permalink_url);
                 }
             });
