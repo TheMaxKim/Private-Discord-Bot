@@ -4,7 +4,7 @@ var AuthDetails = require("./auth.json");
 
 // Initialize bot
 var Discord = require("discord.js");
-var discord_bot = new Discord.Client();
+var bot = new Discord.Client();
 
 // Initialize YouTube
 var youtube_node = require("youtube-node");
